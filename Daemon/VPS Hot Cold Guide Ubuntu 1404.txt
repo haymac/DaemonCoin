@@ -55,11 +55,11 @@ masternodeprivkey=privatekey
 
 # Run VPS wallet
 
-./Olympicd
+./Daemond
 
 # You should see server starting
 
-./Olympicd getinfo
+./Daemond getinfo
 	
 # To check the status of your masternode
 
