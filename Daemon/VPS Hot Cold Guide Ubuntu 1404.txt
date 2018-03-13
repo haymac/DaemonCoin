@@ -1,0 +1,75 @@
+# You have to buy Ubuntu 14.04 VPS to setup MN
+
+# Login as root
+
+sudo apt-get install -y build-essential libtool autotools-dev pkg-config
+sudo apt-get install -y libssl-dev libboost-all-dev autoconf automake git
+git clone https://github.com/bitcoin-core/secp256k1
+cd ~/secp256k1
+./autogen.sh
+./configure
+make
+./tests
+
+# Wait a few minutes for tests to finish
+
+sudo make install  # optional
+sudo apt-get install -y libqt4-dev libminiupnpc-dev
+sudo apt-get install -y libgmp-dev openssl software-properties-common
+sudo add-apt-repository ppa:bitcoin/bitcoin
+sudo apt-get update
+sudo apt-get install -y libdb4.8-dev libdb4.8++-dev
+	
+# do the next 5 lines (recommended) if you don't have loads of RAM in your VPS
+
+sudo dd if=/dev/zero of=/var/swap.img bs=1024k count=1000
+sudo mkswap /var/swap.img
+sudo swapon /var/swap.img
+sudo chmod 0600 /var/swap.img
+sudo chown root:root /var/swap.img
+
+# Login as user and type these commands
+
+cd ~
+git clone https://github.com/DMNCoin/Daemon.git
+cd ~/Daemon/src
+make -f makefile.unix
+./Daemond
+
+# Ignore the error message
+
+./Daemond stop
+nano ~/.Daemon/Daemon.conf
+
+# Make the Config file look like this
+
+rpcuser=yourusername
+rpcpassword=yourpassword
+rpcallowip=127.0.0.1
+daemon=1
+server=1
+listen=1
+masternodeaddr=x.x.x.x:19371
+masternode=1
+masternodeprivkey=privatekey
+
+# Run VPS wallet
+
+./Olympicd
+
+# You should see server starting
+
+./Olympicd getinfo
+	
+# To check the status of your masternode
+
+# Send exactly 3000 coins to MN and wait 15 confirmations
+
+./Daemond masternode genkey
+
+# Output to config file
+
+./Daemond stop
+./Daemond
+./Daemond masternode start
+
