@@ -31,7 +31,7 @@ sudo chown root:root /var/swap.img
 # Login as user and type these commands
 
 cd ~
-git clone https://github.com/DMNCoin/Daemon.git
+git clone https://github.com/DaemonCoinDev/DaemonCoin.git
 cd ~/Daemon/src
 make -f makefile.unix
 ./Daemond
